@@ -1,5 +1,5 @@
 from crop_product import CropProduct
-from crop import Crop
+from cultivation.crops.crop import Crop
 
 
 class Rice(Crop):

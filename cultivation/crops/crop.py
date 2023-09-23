@@ -2,6 +2,7 @@ class Crop:
     def __init__(self):
         self.growth_phase = 1
         self.health_lvl = 100
+        self.has_plague = False
         '''
         phases:
         > outbreak (30 sec per state)
@@ -12,15 +13,21 @@ class Crop:
            4 - growth state 2
            5 - growth state 3
         6 > mellowing (120 sec)
-        7 > death
-            muerte de la planta después de 2 minutos
         '''
 
-    def water_plant(self, amount: int):
+    def water_plant(self):
         self.health_lvl += 15
 
     def growth(self, seconds):
-        pass
+        change = 60
+        level = (100 - self.health_lvl) // 20
+        change = change + (10 * level)
+        # 60 segundos para subir de fase
+        if seconds >= change:
+            self.growth_phase += seconds // change
+
+
+
 
     '''
     trigo, maíz, papa, arroz, algodon:
