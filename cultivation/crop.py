@@ -1,13 +1,7 @@
-
-
-class Cultivos:
-    def __init__(self, name: str,
-                 product_amount: int,
-                 ind_price: float):
-        self.product_amount = product_amount
-        self.name = name
-        self.ind_price = ind_price
+class Crop:
+    def __init__(self):
         self.growth_phase = 1
+        self.health_lvl = 100
         '''
         phases:
         > outbreak (30 sec per state)
@@ -21,7 +15,6 @@ class Cultivos:
         7 > death
             muerte de la planta después de 2 minutos
         '''
-        self.health_lvl = 100
 
     def water_plant(self, amount: int):
         self.health_lvl += 15
@@ -33,18 +26,18 @@ class Cultivos:
     trigo, maíz, papa, arroz, algodon:
     productos cosechados, cantidad y precio.
     trigo:
-	    - 10 libras de harina
-	    -  5 kilo de semillas de trigo
+	- 10 libras de harina Q70.00
+	- 5 kilo de semillas de trigo  Q150.00
     maiz:
-	    - 25 elote
-	    - 10 kilos semillas de maiz
+	- 25 elote Q45.00
+	- 10 kilos semillas de maiz Q35.00
     papa:
-	    - 20 papas
-	    - 20 papas como semilla
+	- 20 papas Q100.00
+	- 20 papas como semilla Q100.00
     arroz:
-	    - 10 kilos de arroz
-	    - 5 kilos de semilla de arroz
+	- 10 kilos de arroz Q500.00
+	- 5 kilos de semilla de arroz Q250.00
     algodon:
-	    - 1 kilo de arroz
-	    - 10 kilos semilla de algodon
+	- 1 kilo de algodon puro Q600.00
+	- 10 kilos semilla de algodon Q450.00
     '''
