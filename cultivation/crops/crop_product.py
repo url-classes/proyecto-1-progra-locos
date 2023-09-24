@@ -13,3 +13,8 @@ class CropProduct:
             - producto consumible : True
             - producto de plantación : False 
         '''
+    def __str__(self):
+        return f'{self.name}:\n ' \
+               f'Cantidad: {self.amount}\n ' \
+               f'Precio individual: {self.price}\n ' \
+               f'Precio total: {self.price * self.amount}'

@@ -1,4 +1,4 @@
-from plague import Plague
+from cultivation.plagues.plague import Plague
 
 
 class Aphid(Plague):

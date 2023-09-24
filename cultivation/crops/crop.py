@@ -1,6 +1,6 @@
 class Crop:
     def __init__(self):
-        self.growth_phase = 1
+        self.__growth_phase = 1
         self.health_lvl = 100
         self.has_plague = False
         '''
@@ -15,6 +15,19 @@ class Crop:
         6 > mellowing (120 sec)
         '''
 
+    @property
+    def growth_phase(self):
+        if self.__growth_phase == 1 or self.__growth_phase == 2:
+            return f'Brotando (Nivel {self.__growth_phase})'
+        elif 3 <= self.__growth_phase < 6:
+            return f'Creciendo (Nivel {self.__growth_phase})'
+        else:
+            return f'Madura'
+
+    @growth_phase.setter
+    def growth_phase(self, value):
+        self.__growth_phase = value
+
     def water_plant(self):
         self.health_lvl += 15
 
@@ -25,6 +38,11 @@ class Crop:
         # 60 segundos para subir de fase
         if seconds >= change:
             self.growth_phase += seconds // change
+
+    def __str__(self):
+        return f'Estado:\n -Fase de crecimiento: {self.growth_phase}\n ' \
+               f'-Nivel de salúd: {self.health_lvl}\n ' \
+               f'-Plagas: {self.has_plague}'
 
 
 
