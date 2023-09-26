@@ -1,8 +1,17 @@
+import random
+from cultivation.plagues.aphid import Aphid
+from cultivation.plagues.caterpillar import Caterpillar
+from cultivation.plagues.tripp import Tripp
+from cultivation.plagues.plague import Plague
+
+
 class Crop:
     def __init__(self):
         self.__growth_phase = 1
-        self.health_lvl = 100
-        self.has_plague = False
+        self.__health_lvl = 100
+        self.actual_plague = Plague()
+        self.change = 60
+        self.lifespan = 0 # minutos
         '''
         phases:
         > outbreak (30 sec per state)
@@ -28,24 +37,53 @@ class Crop:
     def growth_phase(self, value):
         self.__growth_phase = value
 
+    @property
+    def health_lvl(self) -> int:
+        return self.__health_lvl
+
+    @health_lvl.setter
+    def health_lvl(self, value: int):
+        if value <= 0:
+            self.__health_lvl = 0
+
+        elif value >= 100:
+            self.__health_lvl = 100
+
     def water_plant(self):
         self.health_lvl += 15
 
     def growth(self, seconds):
-        change = 60
-        level = (100 - self.health_lvl) // 20
-        change = change + (10 * level)
+        level = (100 - self.health_lvl) // 5 # cuantos 20s hay en la salud de la planta
+        self.change = self.change + (10 * level)
         # 60 segundos para subir de fase
-        if seconds >= change:
-            self.growth_phase += seconds // change
+        if seconds >= self.change:
+            self.growth_phase += seconds // self.change
+        self.lifespan += round(seconds / 60, 1)
+        self.health_lvl -= self.actual_plague.damage_streak
+        if self.actual_plague.activity_lvl != 100:
+            self.actual_plague.activity_lvl += 5
+        '''pendiente: cambios a la salud de una plaga (opcional)'''
+        self.health_lvl -= 2 * (seconds // 2)
+        if self.actual_plague.activity_lvl == 0:
+            self.actual_plague = Plague()
 
     def __str__(self):
         return f'Estado:\n -Fase de crecimiento: {self.growth_phase}\n ' \
                f'-Nivel de salúd: {self.health_lvl}\n ' \
-               f'-Plagas: {self.has_plague}'
+               f'-Plagas: {str(self.actual_plague)}\n ' \
+               f'-Tiempo para cambiar de fase: {round(self.change / 60, 2)} minutos\n ' \
+               f'-Tiempo de vida: {round(self.lifespan, 1)} minutos'
 
-
-
+    def get_sick(self, seconds):
+        if self.actual_plague == 'Ninguna':
+            if round(self.lifespan) % random.randint(1, 12) == 0:
+                plague_index = random.randint(1, 3)
+                plagues = {
+                    1: Aphid(),
+                    2: Caterpillar(),
+                    3: Tripp()
+                }
+                self.actual_plague = plagues[plague_index]
 
     '''
     trigo, maíz, papa, arroz, algodon:

@@ -3,10 +3,24 @@ import random
 
 class Plague:
     def __init__(self):
-        self.activity_Lvl = 100
-        self.target_row = random.randint(0, 9)
-        self.target_col = random.randint(0, 9)
+        self.name = 'Ninguna'
+        self.__activity_lvl = 100
         self.damage_streak = 0
+        self.frequency = 0
 
-    def plague_attack(self, ground_matrix: []):
-        ground_matrix[self.target_row][self.target_col].health_lvl -= self.damage_streak
+    @property
+    def activity_lvl(self):
+        return self.__activity_lvl
+
+    @activity_lvl.setter
+    def activity_lvl(self, value: int):
+        if self.__activity_lvl + value >= 100:
+            self.__activity_lvl = 100
+        else:
+            self.__activity_lvl += value
+
+    def set_performance(self, seconds):
+        self.activity_lvl += 2
+
+    def __str__(self):
+        return self.name

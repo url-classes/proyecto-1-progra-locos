@@ -9,6 +9,8 @@ from cultivation.plagues.aphid import Aphid
 from cultivation.plagues.caterpillar import Caterpillar
 from cultivation.plagues.tripp import Tripp
 
+import time
+
 ground: list[Corn | Cotton | Potato | Rice | Wheat] = []
 plagues: list[Aphid | Caterpillar | Tripp] = []
 seed_products: list[CropProduct] = [
@@ -34,6 +36,28 @@ seed_plant = {
     '-Planta de algodón-': 4
 }
 
+
+def input_timer(prompt):
+    start = time.time()
+    character = input(prompt)
+    end = time.time()
+    total_time = end - start
+    for crop in ground:
+        crop.growth(total_time)
+        crop.get_sick(total_time)
+        crop.actual_plague.set_performance(total_time)
+        death()
+
+    return character
+
+
+def death():
+    for plant in ground:
+        if plant.health_lvl == 0:
+            ground.remove(plant)
+            print(f'¡¡¡Una {plant.plant_name} ha muerto!!!')
+
+
 def add_crop():
     spent = 0
     for i in seed_products:
@@ -48,7 +72,7 @@ def add_crop():
               '3 - Papas de plantación\n ' +
               '4 - Semilla de arroz\n ' +
               '5 - Semilla de algodón')
-        sel = int(input(': '))
+        sel = int(input_timer(': '))
         seed_products[sel - 1].amount -= 1
         if sel == 1:
             ground.append(Corn())
@@ -85,7 +109,7 @@ def collect():
     if not_ready == len(ground):
         print('¡Lo siento!, pero no te quedan más semillas')
     else:
-        sel = int(input('Selecciona una de las plantas para cosechar: '))
+        sel = int(input_timer('Selecciona una de las plantas para cosechar: '))
         k = seed_plant[ground[sel - 1].plant_name]
         seed_products[k].amount += 1
         ind_products[k].amount += 1
@@ -142,7 +166,7 @@ def main():
               '6 - Medicar un cultivo\n ' +
               '7 - Revisar mis productos de cultivo')
 
-        sel = input(': ')
+        sel = input_timer(': ')
         if sel == '1':
             add_crop()
         elif sel == '2':
@@ -158,7 +182,7 @@ def main():
             medic()
         elif sel == '7':
             crop_product_stats()
-        option2 = input('¿Regresar al menú? S/N: ')
+        option2 = input_timer('¿Regresar al menú? S/N: ')
         if option2 == 'S':
             continue
         else:
