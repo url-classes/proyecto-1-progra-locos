@@ -50,8 +50,9 @@ class Animal:
                 self.happiness = max(self.happiness - 8, 0)
 
     def evalueate(self):
-        if self.health == 0:
-            self.is_live = False
+        while True:
+            if self.health == 0:
+                self.is_live = False
 
     def get_sick(self):
         while self.is_live and len(self.diseases) <= 5:
@@ -75,6 +76,10 @@ class Animal:
 
     def eat(self, hungry_pts: int):
         self.hungry = min(100, self.hungry + hungry_pts)
+
+    def recolect_product(self, product: str):
+
+        pass
 
     def __str__(self):
         return self.name

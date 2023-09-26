@@ -27,7 +27,7 @@ def conts(consume_hunger, consume_hapiness, consume_cleaness, is_live):
     thread_life.start()
 
 
-def stroke_animal(animals: list[Animal]):
+def stroke_animal(animals: list):
     found_animal = False
 
     print('Acariciar a tu animal, aumentará el nivel de felicidad dependiendo de cuánto tiempo quieres esperar.')
@@ -49,7 +49,7 @@ def stroke_animal(animals: list[Animal]):
         stroke_animal(animals)
 
 
-def clean_animal(animals: list[Animal]):
+def clean_animal(animals: list):
     found_animal = False
 
     print('Limpiar a tu animal, aumentará el nivel de limpieza, '
@@ -72,7 +72,7 @@ def clean_animal(animals: list[Animal]):
         stroke_animal(animals)
 
 
-def eat_animal(animals: list[Animal]):
+def eat_animal(animals: list):
     found_animal = False
     found_food = False
 
@@ -85,6 +85,25 @@ def eat_animal(animals: list[Animal]):
             id_food = food['Hunger']
             found_food = True
             break
+
+    print('Ingresa el nombre del animal que deseas alimentar: ')
+    for animal in animals:
+        print(animal.name)
+    animal_look = input()
+    for animal in animals:
+        if animal.name == animal_look:
+            animal_look = animal
+            found_animal = True
+
+    if found_animal and found_food:
+        animal_look.eat(id_food)
+    else:
+        print('Wow, el animal no fue encontrado y/o la comida no existe.')
+        eat_animal(animals)
+
+
+def recolect_product_animal(animals: list):
+    found_animal = False
 
     print('Ingresa el nombre del animal que deseas alimentar: ')
     for animal in animals:
@@ -130,6 +149,7 @@ def choose_animal():
 
 
 def main_animals() -> list:
+    inventory = []
     animals: list[Cow | Chicken | Sheep | Bee | Goat] = []
     print('Bienvenido a: "Cuidado de Animales"')
     op = ''
@@ -141,6 +161,7 @@ def main_animals() -> list:
             animal = choose_animal()
             conts(animal.consume_hunger, animal.consume_happiness, animal.consume_cleaness, animal.is_live)
             animals.append(animal)
+            print(animal.production)
             print(f'Felicidades {animal.name} se ha unido a tu granja! ¡Espero la cuides lo mejor posible!')
             continue
         if op == '2':
@@ -150,4 +171,7 @@ def main_animals() -> list:
         if op == '4':
             clean_animal(animals)
         if op == '5':
-    return animals
+            recolect_product_animal(animals)
+    return [animals, inventory]
+
+
