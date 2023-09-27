@@ -150,17 +150,26 @@ def cure_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
             found_animal = True
 
     if found_animal and have_disease:
-        if animal_recolect.amount_product > 0:
-            print(f'{animal_recolect.name} ha hecho {animal_recolect.amount_product} '
-                  f'de {animal_recolect.product}, mientras tu no estabas.')
-            print('Recogido exitosamente.')
-            return animal_recolect.recolect_product(animal_recolect.product)
+        print('¿Qué deseas curar?')
+        for i in range(len(animal_cure.diseases)):
+            print(f'{i+1}. {animal_cure.diseases[i]}')
+        print('A continuación, te mostraré una enfermedad junto a su antídoto, ingresa la medicina a servir.')
+        for medicine in medicines:
+            print(f"El/La {medicine['Medicina']} cura el/la {medicine['Enfermedad']}")
+
+        medicine_give = input()
+        disease_cure = ''
+
+        for medicine in medicines:
+            if medicine['Medicina'] == medicine_give:
+                disease_cure = medicine['Enfermedad']
+
+        if disease_cure in animal_cure.diseases:
+            animal_cure.cleaness = 10
+            animal_cure.diseases.remove(disease_cure)
         else:
-            print('Vaya, se encuentra vacío el almacen de productos.')
-            return recolect_product_animal(animals)
-    else:
-        print('Wow, el animal no fue encontrado.')
-        return recolect_product_animal(animals)
+            print('Oh, no terminó como esperaba intentalo otra vez.')
+            cure_animal(animals)
 
 
 def choose_animal():
@@ -194,7 +203,7 @@ def main_animals(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
     inventory = []
     print('Bienvenido a: "Cuidado de Animales"')
     op = ''
-    while op != '7':
+    while op != '8':
         print('\nElige que hacer:\n1. Adquirir un animal 2. Alimentar'
               ' 3. Acariciar 4. Limpiar 5. Recolectar Recursos 6. Curar 7. Ver estado 8. Salir')
         op = input()
@@ -215,4 +224,10 @@ def main_animals(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
             inventory.append(recolect_product_animal(animals))
         if op == '6':
             cure_animal(animals)
+        if op == '7':
+            animal_status = input('Ingresa el nombre del animal a buscar y mostrar su estado: ')
+            for animal in animals:
+                if animal_status == animal.name:
+                    print(animal.status())
+
     return [animals, inventory]

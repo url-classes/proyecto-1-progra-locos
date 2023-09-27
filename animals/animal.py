@@ -23,6 +23,7 @@ class Animal:
                 else:
                     self.diseases.append('Hambre')
                 self.health = max(self.health - 5, 0)
+                self.amount_product = max(self.amount_product - 2, 0)
             else:
                 self.hungry = max(self.hungry - 10, 0)
 
@@ -35,6 +36,7 @@ class Animal:
                 else:
                     self.diseases.append('Gripe')
                 self.health = max(self.health - 7, 0)
+                self.amount_product = max(self.amount_product - 2, 0)
             else:
                 self.cleaness = max(self.cleaness - 1, 0)
 
@@ -47,6 +49,7 @@ class Animal:
                 else:
                     self.diseases.append('Malestar Estomacal')
                 self.health = max(self.health - 1, 0)
+                self.amount_product = max(self.amount_product - 2, 0)
             else:
                 self.happiness = max(self.happiness - 8, 0)
 
@@ -75,6 +78,17 @@ class Animal:
 
     def eat(self, hungry_pts: int):
         self.hungry = min(100, self.hungry + hungry_pts)
+
+    def status_animal(self, product: str):
+        r = f'Nombre: {self.name}\nHambre: {self.hungry}\nFelicidad: {self.happiness}'
+        r += f'Limpieza: {self.cleaness}\nNivel de Productividad: {self.productivity}\nEnfermedades: '
+        if len(self.diseases) == 0:
+            pass
+        else:
+            for disease in self.diseases:
+                r += f'{disease}, '
+        r += f'Productos por Recoger: {self.amount_product} {product}'
+        return r
 
     def __str__(self):
         return self.name

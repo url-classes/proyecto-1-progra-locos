@@ -9,3 +9,7 @@ class Goat(Animal):
 
     def production(self):
         super().produce_product(self.rate_product)
+
+    def status(self):
+        r = super().status_animal(self.product)
+        return r
