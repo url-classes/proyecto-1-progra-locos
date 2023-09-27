@@ -121,7 +121,7 @@ def recolect_product_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
             print(f'{animal_recolect.name} ha hecho {animal_recolect.amount_product} '
                   f'de {animal_recolect.product}, mientras tu no estabas.')
             print('Recogido exitosamente.')
-            return animal_recolect.recolect_product(animal_recolect.product)
+            return animal_recolect.recolect_product(animal_recolect.product, animal_recolect.price_product)
         else:
             print('Vaya, se encuentra vacío el almacen de productos.')
             return recolect_product_animal(animals)
@@ -202,8 +202,7 @@ def choose_animal():
 def main_animals(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
     inventory = []
     print('Bienvenido a: "Cuidado de Animales"')
-    op = ''
-    while op != '8':
+    while True:
         print('\nElige que hacer:\n1. Adquirir un animal 2. Alimentar'
               ' 3. Acariciar 4. Limpiar 5. Recolectar Recursos 6. Curar 7. Ver estado 8. Salir')
         op = input()
@@ -216,18 +215,27 @@ def main_animals(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
             continue
         if op == '2':
             eat_animal(animals)
+            continue
         if op == '3':
             stroke_animal(animals)
+            continue
         if op == '4':
             clean_animal(animals)
+            continue
         if op == '5':
             inventory.append(recolect_product_animal(animals))
+            continue
         if op == '6':
             cure_animal(animals)
+            continue
         if op == '7':
+            for animal in animals:
+                print(animal)
             animal_status = input('Ingresa el nombre del animal a buscar y mostrar su estado: ')
             for animal in animals:
                 if animal_status == animal.name:
                     print(animal.status())
-
-    return [animals, inventory]
+            continue
+        if op == '8':
+            diccionario = {'Animales': animals, 'Inventario': inventory}
+            return diccionario

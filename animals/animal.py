@@ -58,8 +58,10 @@ class Animal:
             time.sleep(rate_product)
             self.amount_product = self.amount_product + 1
 
-    def recolect_product(self, product: str):
-        diccionario = {'Cantidad': self.productivity * self.amount_product, 'Producto': product}
+    def recolect_product(self, product: str, precio: int):
+        diccionario = {'Cantidad': int(self.productivity * self.amount_product),
+                       'Producto': product,
+                       'Precio': precio}
         self.amount_product = 0
         return diccionario
 
@@ -80,14 +82,14 @@ class Animal:
         self.hungry = min(100, self.hungry + hungry_pts)
 
     def status_animal(self, product: str):
-        r = f'Nombre: {self.name}\nHambre: {self.hungry}\nFelicidad: {self.happiness}'
+        r = f'Nombre: {self.name}\nHambre: {self.hungry}\nFelicidad: {self.happiness} '
         r += f'Limpieza: {self.cleaness}\nNivel de Productividad: {self.productivity}\nEnfermedades: '
         if len(self.diseases) == 0:
             pass
         else:
             for disease in self.diseases:
                 r += f'{disease}, '
-        r += f'Productos por Recoger: {self.amount_product} {product}'
+        r += f'\nProductos por Recoger: {self.amount_product} {product}'
         return r
 
     def __str__(self):

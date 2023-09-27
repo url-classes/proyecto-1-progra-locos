@@ -6,6 +6,7 @@ class Bee(Animal):
         super().__init__(name)
         self.product = 'Miel'
         self.rate_product = 13
+        self.price_product = 25
 
     def production(self):
         super().produce_product(self.rate_product)

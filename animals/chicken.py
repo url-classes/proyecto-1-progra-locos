@@ -6,6 +6,7 @@ class Chicken(Animal):
         super().__init__(name)
         self.product = 'Huevos'
         self.rate_product = 5
+        self.price_product = 15
 
     def production(self):
         super().produce_product(self.rate_product)
