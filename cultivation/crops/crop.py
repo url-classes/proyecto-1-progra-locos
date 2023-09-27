@@ -1,4 +1,5 @@
 import random
+import math
 from cultivation.plagues.aphid import Aphid
 from cultivation.plagues.caterpillar import Caterpillar
 from cultivation.plagues.tripp import Tripp
@@ -68,17 +69,41 @@ class Crop:
         self.change -= 30
 
     def growth(self, seconds):
-        level = (100 - self.health_lvl) // 5 # cuantos 20s hay en la salud de la planta
+        level = (100 - self.health_lvl) // 5
         self.change = self.change + (10 * level)
-        # 60 segundos para subir de fase
         if seconds >= self.change:
             self.__growth_phase += seconds // self.change
+
+    def lifespan(self, seconds):
         self.lifespan += round(seconds / 60, 1)
+
+    def plague_attack(self, seconds):
         self.health_lvl -= self.actual_plague.damage_streak
-        if self.actual_plague.activity_lvl != 100:
-            self.actual_plague.activity_lvl += 5
-        '''pendiente: cambios a la salud de una plaga (opcional)'''
-        self.health_lvl -= 2
+        self.health_lvl -= math.trunc(seconds)
+        if self.actual_plague.activity_lvl == 0:
+            self.actual_plague = Plague()
+
+    def get_sick(self, seconds):
+        if self.actual_plague.name == 'Ninguna':
+            plague_index = random.randint(1, 3)
+            plagues = {
+                1: Aphid(),
+                2: Caterpillar(),
+                3: Tripp()
+            }
+            if int(round(self.lifespan)) == \
+                    random.randint(int(round(self.lifespan)),
+                                   int(round(self.lifespan)) + plagues[plague_index].frequency):
+
+                self.actual_plague = plagues[plague_index]
+
+    def fertilize(self, fertilizer):
+        self.change -= fertilizer.change_delta
+        self.health_lvl += fertilizer.health_delta
+
+    def medic(self, medicine):
+        self.actual_plague.activity_lvl -= medicine.plague_activity_change
+        self.health_lvl += medicine.plant_health_increment
         if self.actual_plague.activity_lvl == 0:
             self.actual_plague = Plague()
 
@@ -89,16 +114,7 @@ class Crop:
                f'-Tiempo para cambiar de fase: {round(self.change / 60, 1)} minutos\n ' \
                f'-Tiempo de vida: {round(self.lifespan, 1)} minutos'
 
-    def get_sick(self, seconds):
-        if self.actual_plague.name == 'Ninguna':
-            if int(round(self.lifespan)) == random.randint(0, self.change):
-                plague_index = random.randint(1, 3)
-                plagues = {
-                    1: Aphid(),
-                    2: Caterpillar(),
-                    3: Tripp()
-                }
-                self.actual_plague = plagues[plague_index]
+
 
     '''
     trigo, maíz, papa, arroz, algodon:

@@ -9,6 +9,9 @@ from cultivation.plagues.aphid import Aphid
 from cultivation.plagues.caterpillar import Caterpillar
 from cultivation.plagues.tripp import Tripp
 
+from cultivation.medication.fertilizer import Fertilizer
+from cultivation.medication.medicine import Medicine
+
 import time
 
 ground: list[Corn | Cotton | Potato | Rice | Wheat] = []
@@ -26,6 +29,15 @@ ind_products: list[CropProduct] = [
     CropProduct('Papas', 0, 36.0, True),
     CropProduct('Arroz', 0, 8.0, True),   
     CropProduct('Algodón', 0, 45.0, True)
+]
+medic_products: list[Medicine] = [
+    Medicine('Medicamento Nivel 1', 45.0, 4, 50, 10),
+    Medicine('Medicamento Nivel 2', 90.0, 2, 100, 15)
+]
+
+fertilizers: list[Fertilizer] = [
+    Fertilizer('Fertilizante Nivel 1', 20.0, 4, 180, 10),
+    Fertilizer('Fertilizante Nivel 2', 40.0, 2, 1000, 15)
 ]
 
 seed_plant = {
@@ -45,7 +57,8 @@ def input_timer(prompt):
     for crop in ground:
         crop.growth(total_time)
         crop.get_sick(total_time)
-        crop.actual_plague.set_performance(total_time)
+        crop.lifespan(total_time)
+        crop.plague_attack(total_time)
         death()
 
     return character
@@ -111,21 +124,68 @@ def collect():
     else:
         sel = int(input_timer('Selecciona una de las plantas para cosechar: '))
         k = seed_plant[ground[sel - 1].plant_name]
-        seed_products[k].amount += 1
-        ind_products[k].amount += 1
+        seed_products[k].amount += 2
+        ind_products[k].amount += 2
+        ground.remove(ground[sel - 1])
 
         print(f'¡Felicidades! has obtenido +1 {seed_products[k].name} ' +
               f'y +1 {ind_products[k].name}')
-
+        print('La planta cosechada se ha removido del suelo.')
 
 
 def fertilize():
+    print('FERTILIZAR:')
     for crop in ground:
-        crop.health_lvl += 10
+        print(str(ground.index(crop) + 1) + f'-{crop.plant_name}')
+        print(str(crop) + '\n----------------------------------------------------------------')
+    sel = int(input('Selecciona la planta a fertilizar: ')) - 1
+    i = 0
+    for product in fertilizers:
+        if product.amount != 0:
+            i += 1
+            print(str(i) + '. ' + str(product))
+
+    if i != 0:
+        sel2 = int(input('Selecciona el fertilizante a utilizar: ')) - 1
+        ground[sel].fertilize(fertilizers[sel2])
+        fertilizers[sel2].amount -= 1
+
+        print(f'!La -{ground[sel].plant_name}- ha sido fertilizada!')
+    else:
+        print('¡Ya no tienes más fertilizante!')
 
 
 def medic():
-    pass
+    print('MEDICAR:')
+    not_ill_num = 0
+    for crop in ground:
+        if crop.actual_plague.name == 'Ninguna':
+            not_ill_num += 1
+        else:
+            print(str(ground.index(crop) + 1) + f'-{crop.plant_name}')
+            print(str(crop) + '\n----------------------------------------------------------------')
+    if not_ill_num == len(ground):
+        print('Ninguna de tus plantaciones necesita medicación.')
+    else:
+        sel = int(input('Selecciona la planta a medicar: ')) - 1
+        i = 0
+        for product in medic_products:
+            if product.amount != 0:
+                i += 1
+                print(str(i) + '. ' + str(product))
+        if i != 0:
+            sel2 = int(input('Selecciona el medicamento a utilizar: ')) - 1
+            ground[sel].medic(medic_products[sel2])
+            prompt = ''
+            if medic_products[sel2].plague_activity_change == 100:
+                prompt = 'plaga eliminada.'
+            else:
+                prompt = '-50 de rendimiento de la plaga.'
+
+            print(f'!La -{ground[sel].plant_name}- ha sido medicada! ' +
+                  f'+{medic_products[sel2].plant_health_increment} de salúd y {prompt}')
+        else:
+            print('¡Ya no tienes medicamentos!')
 
 
 def crop_stats():
@@ -134,26 +194,24 @@ def crop_stats():
         print(str(crop) + '\n----------------------------------------------------------------')
 
 
+def general_show_function(lisst, name_list):
+    print(f'{name_list}:')
+    spent = 0
+    for product in lisst:
+        if product.amount == 0:
+            spent += 1
+        else:
+            print(product)
+    if spent == len(ind_products):
+        print(f'--No tienes {name_list}--')
+
+
 def crop_product_stats():
     print('TU INVENTARIO')
-    print('Productos consumibles:')
-    spent = 0
-    for product in ind_products:
-        if product.amount == 0:
-            spent += 1
-        else:
-            print(product)
-    if spent == 5:
-        print('--No tienes productos consumibles--')
-    print('Productos plantables:')
-    spent = 0
-    for product in seed_products:
-        if product.amount == 0:
-            spent += 1
-        else:
-            print(product)
-    if spent == 5:
-        print('--No tienes productos plantables--')
+    general_show_function(ind_products, 'Productos consumibles')
+    general_show_function(seed_products, 'Productos plantables')
+    general_show_function(fertilizers, 'Fertilizantes')
+    general_show_function(medic_products, 'Medicamentos')
 
 
 def main():
@@ -161,7 +219,7 @@ def main():
     while True:
         print('¿QUE QUIERES HACER?:\n 1 - Agregar un cultivo\n ' +
               '2 - Ver el estado de tus cultivos\n ' +
-              '3 - Regar mis cultivos\n ' +
+              '3 - Regar mis cultivos (+15 de salúd cada uno y -30 segundos de cambio de fase)\n ' +
               '4 - Recolectar cosechas\n ' +
               '5 - Fertilizar la tierra\n ' +
               '6 - Medicar un cultivo\n ' +
