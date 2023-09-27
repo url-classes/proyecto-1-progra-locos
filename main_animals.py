@@ -3,7 +3,6 @@ from animals import Chicken
 from animals import Sheep
 from animals import Goat
 from animals import Bee
-from animals import Animal
 import threading
 
 foods = [{'id': 1, 'Name': 'Heno', 'Hunger': 5},
@@ -13,7 +12,7 @@ foods = [{'id': 1, 'Name': 'Heno', 'Hunger': 5},
          {'id': 5, 'Name': 'Granos Premium', 'Hunger': 22}]
 
 
-def conts(consume_hunger, consume_hapiness, consume_cleaness, is_live):
+def conts(consume_hunger, consume_hapiness, consume_cleaness, is_live, start_production):
     thread_hunger = threading.Thread(target=consume_hunger)
     thread_hunger.start()
 
@@ -26,8 +25,11 @@ def conts(consume_hunger, consume_hapiness, consume_cleaness, is_live):
     thread_life = threading.Thread(target=is_live)
     thread_life.start()
 
+    thread_start_product = threading.Thread(target=start_production)
+    thread_start_product.start()
 
-def stroke_animal(animals: list):
+
+def stroke_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
     found_animal = False
 
     print('Acariciar a tu animal, aumentará el nivel de felicidad dependiendo de cuánto tiempo quieres esperar.')
@@ -49,7 +51,7 @@ def stroke_animal(animals: list):
         stroke_animal(animals)
 
 
-def clean_animal(animals: list):
+def clean_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
     found_animal = False
 
     print('Limpiar a tu animal, aumentará el nivel de limpieza, '
@@ -72,7 +74,7 @@ def clean_animal(animals: list):
         stroke_animal(animals)
 
 
-def eat_animal(animals: list):
+def eat_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
     found_animal = False
     found_food = False
 
@@ -102,23 +104,63 @@ def eat_animal(animals: list):
         eat_animal(animals)
 
 
-def recolect_product_animal(animals: list):
+def recolect_product_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
     found_animal = False
 
-    print('Ingresa el nombre del animal que deseas alimentar: ')
+    print('Ingresa el nombre del animal que deseas recolectar sus productos: ')
     for animal in animals:
         print(animal.name)
-    animal_look = input()
+    animal_recolect = input()
     for animal in animals:
-        if animal.name == animal_look:
-            animal_look = animal
+        if animal.name == animal_recolect:
+            animal_recolect = animal
             found_animal = True
 
-    if found_animal and found_food:
-        animal_look.eat(id_food)
+    if found_animal:
+        if animal_recolect.amount_product > 0:
+            print(f'{animal_recolect.name} ha hecho {animal_recolect.amount_product} '
+                  f'de {animal_recolect.product}, mientras tu no estabas.')
+            print('Recogido exitosamente.')
+            return animal_recolect.recolect_product(animal_recolect.product)
+        else:
+            print('Vaya, se encuentra vacío el almacen de productos.')
+            return recolect_product_animal(animals)
     else:
-        print('Wow, el animal no fue encontrado y/o la comida no existe.')
-        eat_animal(animals)
+        print('Wow, el animal no fue encontrado.')
+        return recolect_product_animal(animals)
+
+
+def cure_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
+    medicines = [{'Medicina': 'Ibuprofeno', 'Enfermedad': 'Gripe'},
+                 {'Medicina': 'GastroAvan', 'Enfermedad': 'Hambre'},
+                 {'Medicina': 'Estomeno', 'Enfermedad': 'Malestar Estomacal'}]
+
+    found_animal = False
+    have_disease = False
+
+    print('Ingresa el nombre del animal que deseas saber si tiene alguna enfermedad: ')
+    for animal in animals:
+        print(animal.name)
+    animal_cure = input()
+    for animal in animals:
+        if animal.name == animal_cure:
+            animal_cure = animal
+            if len(animal.diseases) > 0:
+                have_disease = True
+            found_animal = True
+
+    if found_animal and have_disease:
+        if animal_recolect.amount_product > 0:
+            print(f'{animal_recolect.name} ha hecho {animal_recolect.amount_product} '
+                  f'de {animal_recolect.product}, mientras tu no estabas.')
+            print('Recogido exitosamente.')
+            return animal_recolect.recolect_product(animal_recolect.product)
+        else:
+            print('Vaya, se encuentra vacío el almacen de productos.')
+            return recolect_product_animal(animals)
+    else:
+        print('Wow, el animal no fue encontrado.')
+        return recolect_product_animal(animals)
 
 
 def choose_animal():
@@ -148,9 +190,8 @@ def choose_animal():
         return choose_animal()
 
 
-def main_animals() -> list:
+def main_animals(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
     inventory = []
-    animals: list[Cow | Chicken | Sheep | Bee | Goat] = []
     print('Bienvenido a: "Cuidado de Animales"')
     op = ''
     while op != '7':
@@ -159,9 +200,9 @@ def main_animals() -> list:
         op = input()
         if op == '1':
             animal = choose_animal()
-            conts(animal.consume_hunger, animal.consume_happiness, animal.consume_cleaness, animal.is_live)
+            conts(animal.consume_hunger, animal.consume_happiness, animal.consume_cleaness,
+                  animal.evalueate, animal.production)
             animals.append(animal)
-            print(animal.production)
             print(f'Felicidades {animal.name} se ha unido a tu granja! ¡Espero la cuides lo mejor posible!')
             continue
         if op == '2':
@@ -171,7 +212,7 @@ def main_animals() -> list:
         if op == '4':
             clean_animal(animals)
         if op == '5':
-            recolect_product_animal(animals)
+            inventory.append(recolect_product_animal(animals))
+        if op == '6':
+            cure_animal(animals)
     return [animals, inventory]
-
-

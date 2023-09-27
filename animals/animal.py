@@ -12,6 +12,7 @@ class Animal:
         self.cleaness = 10
         self.productivity = 1
         self.diseases: list[str] = []
+        self.amount_product = 0
 
     def consume_hunger(self):
         while self.is_live:
@@ -49,22 +50,20 @@ class Animal:
             else:
                 self.happiness = max(self.happiness - 8, 0)
 
+    def produce_product(self, rate_product: int):
+        while self.is_live:
+            time.sleep(rate_product)
+            self.amount_product = self.amount_product + 1
+
+    def recolect_product(self, product: str):
+        diccionario = {'Cantidad': self.productivity * self.amount_product, 'Producto': product}
+        self.amount_product = 0
+        return diccionario
+
     def evalueate(self):
         while True:
             if self.health == 0:
                 self.is_live = False
-
-    def get_sick(self):
-        while self.is_live and len(self.diseases) <= 5:
-            time.sleep(10)
-            if self.happiness == 0:
-                if 'Malestar Estomacal' in self.diseases:
-                    pass
-                else:
-                    self.diseases.append('Malestar Estomacal')
-                self.health = max(self.health - 1, 0)
-            else:
-                self.happiness = max(self.happiness - 8, 0)
 
     def stroke(self, time_set: int):
         time.sleep(time_set)
@@ -76,10 +75,6 @@ class Animal:
 
     def eat(self, hungry_pts: int):
         self.hungry = min(100, self.hungry + hungry_pts)
-
-    def recolect_product(self, product: str):
-
-        pass
 
     def __str__(self):
         return self.name
