@@ -10,7 +10,7 @@ class Crop:
         self.__growth_phase = 1
         self.__health_lvl = 100
         self.actual_plague = Plague()
-        self.change = 60
+        self.__change = 60
         self.lifespan = 0 # minutos
         '''
         phases:
@@ -23,6 +23,17 @@ class Crop:
            5 - growth state 3
         6 > mellowing (120 sec)
         '''
+
+    @property
+    def change(self):
+        return self.__change
+
+    @change.setter
+    def change(self, value):
+        if value <= 60:
+            self.__change = 60
+        else:
+            self.__change = value
 
     @property
     def growth_phase(self):
@@ -49,21 +60,25 @@ class Crop:
         elif value >= 100:
             self.__health_lvl = 100
 
+        else:
+            self.__health_lvl = value
+
     def water_plant(self):
         self.health_lvl += 15
+        self.change -= 30
 
     def growth(self, seconds):
         level = (100 - self.health_lvl) // 5 # cuantos 20s hay en la salud de la planta
         self.change = self.change + (10 * level)
         # 60 segundos para subir de fase
         if seconds >= self.change:
-            self.growth_phase += seconds // self.change
+            self.__growth_phase += seconds // self.change
         self.lifespan += round(seconds / 60, 1)
         self.health_lvl -= self.actual_plague.damage_streak
         if self.actual_plague.activity_lvl != 100:
             self.actual_plague.activity_lvl += 5
         '''pendiente: cambios a la salud de una plaga (opcional)'''
-        self.health_lvl -= 2 * (seconds // 2)
+        self.health_lvl -= 2
         if self.actual_plague.activity_lvl == 0:
             self.actual_plague = Plague()
 
@@ -71,12 +86,12 @@ class Crop:
         return f'Estado:\n -Fase de crecimiento: {self.growth_phase}\n ' \
                f'-Nivel de salúd: {self.health_lvl}\n ' \
                f'-Plagas: {str(self.actual_plague)}\n ' \
-               f'-Tiempo para cambiar de fase: {round(self.change / 60, 2)} minutos\n ' \
+               f'-Tiempo para cambiar de fase: {round(self.change / 60, 1)} minutos\n ' \
                f'-Tiempo de vida: {round(self.lifespan, 1)} minutos'
 
     def get_sick(self, seconds):
-        if self.actual_plague == 'Ninguna':
-            if round(self.lifespan) % random.randint(1, 12) == 0:
+        if self.actual_plague.name == 'Ninguna':
+            if int(round(self.lifespan)) == random.randint(0, self.change):
                 plague_index = random.randint(1, 3)
                 plagues = {
                     1: Aphid(),

@@ -79,7 +79,7 @@ def add_crop():
             print('¡Haz agregado una planta de maiz!')
         elif sel == 2:
             ground.append(Wheat())
-            print('¡Haz agregado una planta de trigo!')
+            print('¡Has agregado una planta de trigo!')
         elif sel == 3:
             ground.append(Potato())
             print('¡Haz agregado una planta de papas!')
@@ -107,14 +107,16 @@ def collect():
         else:
             not_ready += 1
     if not_ready == len(ground):
-        print('¡Lo siento!, pero no te quedan más semillas')
+        print('¡Lo siento!, pero ninguna de tus plantas está lista para cosecharse')
     else:
         sel = int(input_timer('Selecciona una de las plantas para cosechar: '))
         k = seed_plant[ground[sel - 1].plant_name]
         seed_products[k].amount += 1
         ind_products[k].amount += 1
+
         print(f'¡Felicidades! has obtenido +1 {seed_products[k].name} ' +
-              f'y +1 {seed_products[k].name}')
+              f'y +1 {ind_products[k].name}')
+
 
 
 def fertilize():
@@ -130,7 +132,6 @@ def crop_stats():
     for crop in ground:
         print(str(ground.index(crop) + 1) + f' -{crop.plant_name}')
         print(str(crop) + '\n----------------------------------------------------------------')
-
 
 
 def crop_product_stats():
