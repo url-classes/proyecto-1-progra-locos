@@ -249,5 +249,3 @@ def main_crops():
                     'Productos medicinales': medic_products,
                     'Fertilizantes': fertilizers}
 
-
-main()

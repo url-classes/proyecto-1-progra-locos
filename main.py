@@ -16,61 +16,63 @@ def main():
     medic_inventory_crops: list = []
 
     print('MI GRANJA')
-    print('Bienvenido a tu granja:\n  ' +
-          '1 - Cultivar\n  ' +
-          '2 - Granja de animales\n  ' +
-          '3 - Mi calendario\n  ' +
-          '4 - Comercio')
-    sel = input('¿A donde deseas ir?: ')
+    while True:
+        print('Bienvenido a tu granja:\n  ' +
+              '1 - Cultivar\n  ' +
+              '2 - Granja de animales\n  ' +
+              '3 - Mi calendario\n  ' +
+              '4 - Comercio\n  ' +
+              '5 - Salir')
+        sel = input('¿A donde deseas ir?: ')
 
-    if sel == '1':
-        crops_main = main_crops()
-        crops.extend(crops_main['Cultivos'])
-        seed_inventory_crops.extend(crops_main['Productos individuales'])
-        ind_inventory_crops.extend(crops_main['Productos plantables'])
-        fert_inventory_crops.extend(crops_main['Fertilizantes'])
-        medic_inventory_crops.extend(crops_main['Productos medicinales'])
+        if sel == '1':
+            crops_main = main_crops()
+            crops.extend(crops_main['Cultivos'])
+            seed_inventory_crops.extend(crops_main['Productos individuales'])
+            ind_inventory_crops.extend(crops_main['Productos plantables'])
+            fert_inventory_crops.extend(crops_main['Fertilizantes'])
+            medic_inventory_crops.extend(crops_main['Productos medicinales'])
 
-    elif sel == '2':
-        animals_main = main_animals(animals_farm)
-        animals_farm.extend(animals_main['Animales'])
-        inventory_animals.extend(animals_main['Inventario'])
+        elif sel == '2':
+            animals_main = main_animals(animals_farm)
+            animals_farm.extend(animals_main['Animales'])
+            inventory_animals.extend(animals_main['Inventario'])
 
-        '''for i in range(len(animals_main['Animales'])):
-                animals_farm.append(animals_main['Animales'][i])
+            '''for i in range(len(animals_main['Animales'])):
+                    animals_farm.append(animals_main['Animales'][i])
+    
+                for i in range(len(animals_main['Inventario'])):
+                    inventory_animals.append(animals_main['Inventario'][i])'''
 
-            for i in range(len(animals_main['Inventario'])):
-                inventory_animals.append(animals_main['Inventario'][i])'''
-
-    elif sel == '3':
-        pass
-
-    elif sel == '4':
-        trading_main = main_trading(inventory_animals,
-                                    wallet, animals_farm,
-                                    crops,
-                                    seed_inventory_crops,
-                                    fert_inventory_crops,
-                                    medic_inventory_crops,
-                                    ind_inventory_crops)
-
-        wallet += trading_main['Wallet']
-
-        print(trading_main['Inventario'])
-
-        inventory_animals.clear()
-        print(len(trading_main['Inventario']))
-
-        if len(trading_main['Inventario']) == 0:
+        elif sel == '3':
             pass
-        else:
-            for i in range(len(trading_main['Inventario'])):
-                inventory_animals.append(trading_main['Inventario'][i])
 
-        print(inventory_animals)
-        print('ya')
+        elif sel == '4':
+            trading_main = main_trading(inventory_animals,
+                                        wallet, animals_farm,
+                                        crops,
+                                        seed_inventory_crops,
+                                        fert_inventory_crops,
+                                        medic_inventory_crops,
+                                        ind_inventory_crops)
 
-    sys.exit()
+            wallet += trading_main['Wallet']
+
+            print(trading_main['Inventario'])
+
+            inventory_animals.clear()
+            print(len(trading_main['Inventario']))
+
+            if len(trading_main['Inventario']) == 0:
+                pass
+            else:
+                for i in range(len(trading_main['Inventario'])):
+                    inventory_animals.append(trading_main['Inventario'][i])
+
+            print(inventory_animals)
+            print('ya')
+        elif sel == '5':
+            sys.exit()
 
 
 main()

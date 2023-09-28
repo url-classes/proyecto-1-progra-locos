@@ -1,5 +1,5 @@
 # from main_crops import main
-from main_crops import main, general_show_function
+from main_crops import main_crops, general_show_function
 from cultivation.crops.crop_product import CropProduct
 from cultivation.crops.crop import Crop
 from cultivation.medication.fertilizer import Fertilizer
