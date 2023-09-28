@@ -244,7 +244,7 @@ def main_crops():
             crop_product_stats()
         elif sel == '8':
             return {'Cultivos': ground,
-                    'Productos Individuales': ind_products,
+                    'Productos individuales': ind_products,
                     'Productos plantables': seed_products,
                     'Productos medicinales': medic_products,
                     'Fertilizantes': fertilizers}
