@@ -13,6 +13,7 @@ class Crop:
         self.actual_plague = Plague()
         self.__change = 60
         self.lifespan = 0 # minutos
+        self.productivity = 1
         '''
         phases:
         > outbreak (30 sec per state)

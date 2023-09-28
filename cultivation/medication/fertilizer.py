@@ -12,7 +12,7 @@ class Fertilizer:
 
     def __str__(self):
         return f'{self.name}:\n  ' \
-               f'-Precio: {self.price}\n  ' \
+               f'-Precio: {self.price} tornillos.\n  ' \
                f'-Cantidad disponible: {self.amount}\n  ' \
                f'-Beneficio de crecimiento: -{self.change_delta} segundos de tardanza\n  ' \
                f'-Salúd proporcionada a una planta: +{self.health_delta}'

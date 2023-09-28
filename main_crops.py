@@ -17,11 +17,11 @@ import time
 ground: list[Corn | Cotton | Potato | Rice | Wheat] = []
 plagues: list[Aphid | Caterpillar | Tripp] = []
 seed_products: list[CropProduct] = [
-    CropProduct('Semilla de maíz', 10, 12.0, False),
-    CropProduct('Semilla de trigo', 10, 20, False),
-    CropProduct('Papas de plantación', 10, 36, False),
-    CropProduct('Semilla de arroz', 10, 10, False),
-    CropProduct('Semilla de algodón', 10, 20.0, False)
+    CropProduct('Semilla de maíz', 3, 12.0, False),
+    CropProduct('Semilla de trigo', 3, 20, False),
+    CropProduct('Papas de plantación', 3, 36, False),
+    CropProduct('Semilla de arroz', 3, 10, False),
+    CropProduct('Semilla de algodón', 3, 20.0, False)
 ]
 ind_products: list[CropProduct] = [
     CropProduct('Mazorcas', 0, 20.0, True),
@@ -124,12 +124,12 @@ def collect():
     else:
         sel = int(input_timer('Selecciona una de las plantas para cosechar: '))
         k = seed_plant[ground[sel - 1].plant_name]
-        seed_products[k].amount += 2
-        ind_products[k].amount += 2
+        seed_products[k].amount += 2 * ground[sel - 1].productivity
+        ind_products[k].amount += 2 * ground[sel - 1].productivity
         ground.remove(ground[sel - 1])
 
-        print(f'¡Felicidades! has obtenido +1 {seed_products[k].name} ' +
-              f'y +1 {ind_products[k].name}')
+        print(f'¡Felicidades! has obtenido +{seed_products[k].amount} {seed_products[k].name} ' +
+              f'y +{ind_products[k].amount} {ind_products[k].name}')
         print('La planta cosechada se ha removido del suelo.')
 
 
@@ -201,7 +201,7 @@ def general_show_function(lisst, name_list):
         if product.amount == 0:
             spent += 1
         else:
-            print(product)
+            print(str(lisst.index(product)) + '. ' + product)
     if spent == len(ind_products):
         print(f'--No tienes {name_list}--')
 
@@ -214,7 +214,7 @@ def crop_product_stats():
     general_show_function(medic_products, 'Medicamentos')
 
 
-def main():
+def main_crops():
     print('---Sistema de Cultivos---')
     while True:
         print('¿QUE QUIERES HACER?:\n 1 - Agregar un cultivo\n ' +
@@ -223,7 +223,8 @@ def main():
               '4 - Recolectar cosechas\n ' +
               '5 - Fertilizar la tierra\n ' +
               '6 - Medicar un cultivo\n ' +
-              '7 - Revisar mis productos de cultivo')
+              '7 - Revisar mis productos de cultivo\n ' +
+              '8 - Salir')
 
         sel = input_timer(': ')
         if sel == '1':
@@ -241,10 +242,12 @@ def main():
             medic()
         elif sel == '7':
             crop_product_stats()
-        option2 = input_timer('¿Regresar al menú? S/N: ')
-        if option2 == 'S':
-            continue
-        else:
-            break
+        elif sel == '8':
+            return {'Cultivos': ground,
+                    'Productos Individuales': ind_products,
+                    'Productos plantables': seed_products,
+                    'Productos medicinales': medic_products,
+                    'Fertilizantes': fertilizers}
+
 
 main()

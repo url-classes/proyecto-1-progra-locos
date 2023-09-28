@@ -12,7 +12,7 @@ class Medicine:
 
     def __str__(self):
         return f'{self.name}:\n  ' \
-               f'-Precio: {self.price}\n  ' \
+               f'-Precio: {self.price} tornillos.\n  ' \
                f'-Cantidad disponible: {self.amount}\n  ' \
                f'-Daño a una plaga: -{self.plague_activity_change} de daño\n  ' \
                f'-Salúd proporcionada a una planta: +{self.plant_health_increment}'
