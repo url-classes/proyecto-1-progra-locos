@@ -26,12 +26,12 @@ def main():
         sel = input('¿A donde deseas ir?: ')
 
         if sel == '1':
-            crops_main = main_crops()
+            crops_main = main_crops(crops)
             crops.extend(crops_main['Cultivos'])
-            seed_inventory_crops.extend(crops_main['Productos individuales'])
-            ind_inventory_crops.extend(crops_main['Productos plantables'])
-            fert_inventory_crops.extend(crops_main['Fertilizantes'])
-            medic_inventory_crops.extend(crops_main['Productos medicinales'])
+            seed_inventory_crops = crops_main['Productos plantables']
+            ind_inventory_crops = crops_main['Productos individuales']
+            fert_inventory_crops = crops_main['Fertilizantes']
+            medic_inventory_crops = crops_main['Productos medicinales']
 
         elif sel == '2':
             animals_main = main_animals(animals_farm)
@@ -58,9 +58,16 @@ def main():
 
             wallet += trading_main['Wallet']
 
-            print(trading_main['Inventario'])
+            print(wallet)
+            if trading_main['type'] == 'animal':
+                print(trading_main['Inventario'])
+            else:
+                seed_inventory_crops = trading_main['Plantables']
+                ind_inventory_crops = trading_main['Individuales']
+                fert_inventory_crops = trading_main['Fertilizantes']
+                medic_inventory_crops = trading_main['Medicamentos']
 
-            inventory_animals.clear()
+            '''inventory_animals.clear()
             print(len(trading_main['Inventario']))
 
             if len(trading_main['Inventario']) == 0:
@@ -70,7 +77,7 @@ def main():
                     inventory_animals.append(trading_main['Inventario'][i])
 
             print(inventory_animals)
-            print('ya')
+            print('ya')'''
         elif sel == '5':
             sys.exit()
 

@@ -8,7 +8,7 @@ from cultivation.plagues.plague import Plague
 
 class Crop:
     def __init__(self):
-        self.__growth_phase = 1
+        self.__growth_phase = 6
         self.__health_lvl = 100
         self.actual_plague = Plague()
         self.__change = 60
@@ -75,7 +75,7 @@ class Crop:
         if seconds >= self.change:
             self.__growth_phase += seconds // self.change
 
-    def lifespan(self, seconds):
+    def set_lifespan(self, seconds):
         self.lifespan += round(seconds / 60, 1)
 
     def plague_attack(self, seconds):

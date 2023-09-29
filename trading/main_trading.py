@@ -38,7 +38,7 @@ def show_crop_products_buyable(fertilizers, medic_products):
 def buy(buy_list, title: str, wallet: int, inv_list):
     general_show_function(buy_list, title)
     sel3 = int(input('Ingresa el producto que quieres comprar: ')) - 1
-    cant = int(input('Ingresa la cantidad del producto a comprar'))
+    cant = int(input('Ingresa la cantidad del producto a comprar: '))
     if buy_list[sel3].amount - cant <= 0:
         print('No hay suficientes productos de este tipo en venta.')
     else:
@@ -54,7 +54,7 @@ def buy(buy_list, title: str, wallet: int, inv_list):
 def sell(inv_list, title):
     general_show_function(inv_list, title)
     sel3 = int(input('Ingresa el producto que quieres vender: ')) - 1
-    cant = int(input('Ingresa la cantidad del producto a vender'))
+    cant = int(input('Ingresa la cantidad del producto a vender: '))
     if inv_list[sel3].amount - cant <= 0:
         print('No puedes vender este producto en esta cantidad')
     else:
@@ -168,7 +168,10 @@ def main_trading(inventory_animals: list[dict], wallet: int, animals, crops: lis
     sel = input('Ingrese la sección a la que deseas ingresar: ')
     if sel == '1':
         wallet += corps_menu(wallet, crops, individual, seed, fert, medic)
-        return {'Wallet': wallet, 'Plantables': seed, 'Fertilizantes': fert, 'Medicamentos': medic}
+        return {'Wallet': wallet,
+                'Plantables': seed,
+                'Individuales': individual,
+                'Fertilizantes': fert, 'Medicamentos': medic, 'type': 'crop'}
     elif sel == '2':
         wallet += sell_item_farm(inventory_animals, wallet, animals)
-        return {'Wallet': wallet, 'Inventario': inventory_animals}
+        return {'Wallet': wallet, 'Inventario': inventory_animals, 'type': 'animal'}
