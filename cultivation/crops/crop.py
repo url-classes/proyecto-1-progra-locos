@@ -8,7 +8,7 @@ from cultivation.plagues.plague import Plague
 
 class Crop:
     def __init__(self):
-        self.__growth_phase = 6
+        self.__growth_phase = 1
         self.__health_lvl = 100
         self.actual_plague = Plague()
         self.__change = 60
