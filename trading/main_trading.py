@@ -42,8 +42,9 @@ def buy(buy_list, title: str, wallet: int, inv_list):
     if buy_list[sel3].amount - cant <= 0:
         print('No hay suficientes productos de este tipo en venta.')
     else:
-        if wallet - buy_list[sel3].price <= 0:
+        if wallet - buy_list[sel3].price < 0:
             print('No tienes suficiente dinero para comprar este objeto')
+            return 0
         else:
             remove_wallet = buy_list[sel3].price * cant
             buy_list[sel3].amount -= cant
@@ -55,8 +56,9 @@ def sell(inv_list, title):
     general_show_function(inv_list, title)
     sel3 = int(input('Ingresa el producto que quieres vender: ')) - 1
     cant = int(input('Ingresa la cantidad del producto a vender: '))
-    if inv_list[sel3].amount - cant <= 0:
+    if inv_list[sel3].amount - cant < 0:
         print('No puedes vender este producto en esta cantidad')
+        return 0
     else:
         inv_list[sel3].amount -= cant
         increase_wallet = inv_list[sel3].price * cant

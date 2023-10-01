@@ -3,41 +3,15 @@ from cultivation.crops.corn import Corn
 from cultivation.crops.cotton import Cotton
 from cultivation.crops.potato import Potato
 from cultivation.crops.rice import Rice
-from cultivation.crops.crop_product import CropProduct
+
 
 from cultivation.plagues.aphid import Aphid
 from cultivation.plagues.caterpillar import Caterpillar
 from cultivation.plagues.tripp import Tripp
 
-from cultivation.medication.fertilizer import Fertilizer
-from cultivation.medication.medicine import Medicine
-
 import time
 
 plagues: list[Aphid | Caterpillar | Tripp] = []
-seed_products: list[CropProduct] = [
-    CropProduct('Semilla de maíz', 3, 12.0, False),
-    CropProduct('Semilla de trigo', 3, 20, False),
-    CropProduct('Papas de plantación', 3, 36, False),
-    CropProduct('Semilla de arroz', 3, 10, False),
-    CropProduct('Semilla de algodón', 3, 20.0, False)
-]
-ind_products: list[CropProduct] = [
-    CropProduct('Mazorcas', 0, 20.0, True),
-    CropProduct('Harina', 0, 17.0, True),
-    CropProduct('Papas', 0, 36.0, True),
-    CropProduct('Arroz', 0, 8.0, True),   
-    CropProduct('Algodón', 0, 45.0, True)
-]
-medic_products: list[Medicine] = [
-    Medicine('Medicamento Nivel 1', 45.0, 4, 50, 10),
-    Medicine('Medicamento Nivel 2', 90.0, 2, 100, 15)
-]
-
-fertilizers: list[Fertilizer] = [
-    Fertilizer('Fertilizante Nivel 1', 20.0, 4, 180, 10),
-    Fertilizer('Fertilizante Nivel 2', 40.0, 2, 1000, 15)
-]
 
 seed_plant = {
     '-Planta de maíz-': 0,
@@ -71,7 +45,7 @@ def death(ground):
             print(f'¡¡¡Una {plant.plant_name} ha muerto!!!')
 
 
-def add_crop(ground):
+def add_crop(ground, seed_products):
     spent = 0
     for i in seed_products:
         if i.amount == 0:
@@ -110,7 +84,7 @@ def rinse(ground):
     print('Haz regado todos tus cultivos. ¡+15 puntos de salud!')
 
 
-def collect(ground):
+def collect(ground, ind_products, seed_products):
     print('RECOLECTAR PRODUCTOS')
     not_ready = 0
     for crop in ground:
@@ -134,7 +108,7 @@ def collect(ground):
         print('La planta cosechada se ha removido del suelo.')
 
 
-def fertilize(ground):
+def fertilize(ground, fertilizers):
     print('FERTILIZAR:')
     for crop in ground:
         print(str(ground.index(crop) + 1) + f'-{crop.plant_name}')
@@ -160,7 +134,7 @@ def fertilize(ground):
         print('¡Ya no tienes más fertilizante!')
 
 
-def medic(ground):
+def medic(ground, medic_products):
     print('MEDICAR:')
     not_ill_num = 0
     for crop in ground:
@@ -211,11 +185,11 @@ def general_show_function(lisst, name_list):
             spent += 1
         else:
             print(str(lisst.index(product) + 1) + '. ' + str(product))
-    if spent == len(ind_products):
+    if spent == len(lisst):
         print(f'--No tienes {name_list}--')
 
 
-def crop_product_stats():
+def crop_product_stats(ind_products, seed_products, fertilizers, medic_products):
     print('TU INVENTARIO')
     general_show_function(ind_products, 'Productos consumibles')
     general_show_function(seed_products, 'Productos plantables')
@@ -223,7 +197,8 @@ def crop_product_stats():
     general_show_function(medic_products, 'Medicamentos')
 
 
-def main_crops(ground: list[Corn | Cotton | Potato | Rice | Wheat]):
+def main_crops(ground: list[Corn | Cotton | Potato | Rice | Wheat], ind_inventory_crops,
+               seed_inventory_crops, fert_inventory_crops, medic_inventory_crop):
     print('---Sistema de Cultivos---')
     while True:
         print('¿QUE QUIERES HACER?:\n 1 - Agregar un cultivo\n ' +
@@ -237,24 +212,24 @@ def main_crops(ground: list[Corn | Cotton | Potato | Rice | Wheat]):
 
         sel = input_timer(': ', ground)
         if sel == '1':
-            add_crop(ground)
+            add_crop(ground, seed_inventory_crops)
         elif sel == '2':
             print('ESTADO DE TUS CULTIVOS')
             crop_stats(ground)
         elif sel == '3':
             rinse(ground)
         elif sel == '4':
-            collect(ground)
+            collect(ground, ind_inventory_crops, seed_inventory_crops)
         elif sel == '5':
-            fertilize(ground)
+            fertilize(ground, fert_inventory_crops)
         elif sel == '6':
-            medic(ground)
+            medic(ground, medic_inventory_crop)
         elif sel == '7':
-            crop_product_stats()
+            crop_product_stats(ind_inventory_crops, seed_inventory_crops, fert_inventory_crops, medic_inventory_crop)
         elif sel == '8':
             return {'Cultivos': ground,
-                    'Productos individuales': ind_products,
-                    'Productos plantables': seed_products,
-                    'Productos medicinales': medic_products,
-                    'Fertilizantes': fertilizers}
+                    'Productos individuales': ind_inventory_crops,
+                    'Productos plantables': seed_inventory_crops,
+                    'Productos medicinales': medic_inventory_crop,
+                    'Fertilizantes': fert_inventory_crops}
 

@@ -8,23 +8,12 @@ from cultivation.plagues.plague import Plague
 
 class Crop:
     def __init__(self):
-        self.__growth_phase = 1
+        self.__growth_phase = 0
         self.__health_lvl = 100
         self.actual_plague = Plague()
         self.__change = 60
         self.lifespan = 1 # minutos
         self.productivity = 1
-        '''
-        phases:
-        > outbreak (30 sec per state)
-           1 - outbreak state 1 
-           2 - outbreak state 1
-        > growth (20 sec per state)
-           3 - growth state 1 
-           4 - growth state 2
-           5 - growth state 3
-        6 > mellowing (120 sec)
-        '''
 
     @property
     def change(self):
@@ -44,7 +33,7 @@ class Crop:
         elif 2 <= self.__growth_phase < 3:
             return f'Creciendo (Nivel {self.__growth_phase})'
         else:
-            return f'Madurez (Nivel {self.__growth_phase}'
+            return f'Madura'
 
     @growth_phase.setter
     def growth_phase(self, value):
@@ -114,25 +103,3 @@ class Crop:
                f'-Plagas: {str(self.actual_plague)}\n ' \
                f'-Tiempo para cambiar de fase: {round(self.change / 60, 1)} minutos\n ' \
                f'-Tiempo de vida: {round(self.lifespan - 1, 1) } minutos'
-
-
-
-    '''
-    trigo, maíz, papa, arroz, algodon:
-    productos cosechados, cantidad y precio.
-    trigo:
-	- 10 libras de harina Q70.00
-	- 5 kilo de semillas de trigo  Q150.00
-    maiz:
-	- 25 elote Q45.00
-	- 10 kilos semillas de maiz Q35.00
-    papa:
-	- 20 papas Q100.00
-	- 20 papas como semilla Q100.00
-    arroz:
-	- 10 kilos de arroz Q500.00
-	- 5 kilos de semilla de arroz Q250.00
-    algodon:
-	- 1 kilo de algodon puro Q600.00
-	- 10 kilos semilla de algodon Q450.00
-    '''
