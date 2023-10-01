@@ -77,6 +77,7 @@ def corps_menu(wallet, crops, individual, seed, fert, medic):
         print('INVENTARIO')
         show_crop_products_buyable(fert, medic)
         show_crop_products_sellable(individual, seed)
+        return 0
     elif sel2 == '2':
         print('Menú de ventas:\n  ' +
               '1 - Productos plantables\n  ' +
@@ -107,6 +108,7 @@ def corps_menu(wallet, crops, individual, seed, fert, medic):
               'Precio: 500 tornillos (Aumenta el nivel de productividad de tus plantas +1)')
         if wallet - 500 <= 0:
             print('No tienes suficientes tornillos para comprar una mejora')
+            return 0
         else:
             remove_wallet = -500
             for crop in crops:
