@@ -12,7 +12,7 @@ class Crop:
         self.__health_lvl = 100
         self.actual_plague = Plague()
         self.__change = 60
-        self.lifespan = 0 # minutos
+        self.lifespan = 1 # minutos
         self.productivity = 1
         '''
         phases:
@@ -39,12 +39,12 @@ class Crop:
 
     @property
     def growth_phase(self):
-        if self.__growth_phase == 1 or self.__growth_phase == 2:
+        if self.__growth_phase == 1:
             return f'Brotando (Nivel {self.__growth_phase})'
-        elif 3 <= self.__growth_phase < 6:
+        elif 2 <= self.__growth_phase < 3:
             return f'Creciendo (Nivel {self.__growth_phase})'
         else:
-            return f'Madura'
+            return f'Madurez (Nivel {self.__growth_phase}'
 
     @growth_phase.setter
     def growth_phase(self, value):
@@ -72,8 +72,8 @@ class Crop:
     def growth(self):
         level = (100 - self.health_lvl) // 20
         self.change = self.change + (10 * level)
-        if self.lifespan >= self.change:
-            self.__growth_phase += self.lifespan // self.change
+        if self.lifespan >= self.change // 60:
+            self.__growth_phase = self.lifespan // (self.change // 60)
 
     def set_lifespan(self, seconds):
         self.lifespan += round(seconds / 60, 1)
@@ -113,7 +113,7 @@ class Crop:
                f'-Nivel de salúd: {self.health_lvl}\n ' \
                f'-Plagas: {str(self.actual_plague)}\n ' \
                f'-Tiempo para cambiar de fase: {round(self.change / 60, 1)} minutos\n ' \
-               f'-Tiempo de vida: {round(self.lifespan, 1)} minutos'
+               f'-Tiempo de vida: {round(self.lifespan - 1, 1) } minutos'
 
 
 
