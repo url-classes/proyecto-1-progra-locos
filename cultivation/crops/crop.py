@@ -69,11 +69,11 @@ class Crop:
         self.health_lvl += 15
         self.change -= 30
 
-    def growth(self, seconds):
-        level = (100 - self.health_lvl) // 5
+    def growth(self):
+        level = (100 - self.health_lvl) // 20
         self.change = self.change + (10 * level)
-        if seconds >= self.change:
-            self.__growth_phase += seconds // self.change
+        if self.lifespan >= self.change:
+            self.__growth_phase += self.lifespan // self.change
 
     def set_lifespan(self, seconds):
         self.lifespan += round(seconds / 60, 1)

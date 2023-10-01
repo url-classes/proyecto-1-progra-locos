@@ -54,10 +54,11 @@ def input_timer(prompt, ground):
     end = time.time()
     total_time = end - start
     for crop in ground:
-        crop.growth(total_time)
+        crop.growth()
         crop.get_sick(total_time)
         crop.set_lifespan(total_time)
         crop.plague_attack(total_time)
+
         death(ground)
 
     return character
@@ -147,7 +148,11 @@ def fertilize(ground):
 
     if i != 0:
         sel2 = int(input('Selecciona el fertilizante a utilizar: ')) - 1
-        ground[sel].fertilize(fertilizers[sel2])
+        if len(ground) == 0:
+            print('No tienes plantas en tu terreno.')
+        else:
+            ground[sel].fertilize(fertilizers[sel2])
+
         fertilizers[sel2].amount -= 1
 
         print(f'!La -{ground[sel].plant_name}- ha sido fertilizada!')
@@ -175,7 +180,11 @@ def medic(ground):
                 print(str(i) + '. ' + str(product))
         if i != 0:
             sel2 = int(input_timer('Selecciona el medicamento a utilizar: ', ground)) - 1
-            ground[sel].medic(medic_products[sel2])
+            if len(ground) == 0:
+                print('No tienes plantas en tu terreno.')
+            else:
+                ground[sel].medic(medic_products[sel2])
+
             prompt = ''
             if medic_products[sel2].plague_activity_change == 100:
                 prompt = 'plaga eliminada.'
