@@ -140,7 +140,8 @@ def sell_item_farm(inventory_animals: list[dict], wallet, animals) -> int:
                     inventory_animals.remove(sell_item)
                     coins_add = sell_item['Cantidad'] * sell_item['Precio']
                 else:
-                    coins_add = (sell_item['Cantidad'] - amount_sell_item) * sell_item['Precio']
+                    coins_add = amount_sell_item * sell_item['Precio']
+                    sell_item['Cantidad'] = sell_item['Cantidad'] - amount_sell_item
             else:
                 print('No puedes vender esa cantidad de objetos.')
                 return sell_item_farm(inventory_animals, wallet, animals)
@@ -150,14 +151,20 @@ def sell_item_farm(inventory_animals: list[dict], wallet, animals) -> int:
         return coins_add
 
     elif sel_farm == '2':
+        coins_remove = 0
         print('Estos son los precios:\n' + '1x Mejora de productividad = 600 tornillos\n')
-        if wallet - 600 >= 0:
-            coins_remove = -600
-            for animal in animals:
-                animal.productivity += 1
-            return coins_remove
-        else:
-            print('Parece, que no puedes completar esta compra de productividad.')
+        op = input('¿Deseas adquirirla? (s/n)')
+        if op == 's':
+            if wallet - 600 >= 0:
+                coins_remove = -600
+                for animal in animals:
+                    animal.productivity += 1
+            else:
+                print('Parece, que no puedes completar esta compra de productividad.')
+        elif op == 'n':
+            pass
+
+        return coins_remove
 
 
 def main_trading(inventory_animals: list[dict], wallet: int, animals, crops: list[Crop], seed: list[CropProduct],

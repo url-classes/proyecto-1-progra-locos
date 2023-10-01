@@ -104,7 +104,7 @@ def eat_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
         eat_animal(animals)
 
 
-def recolect_product_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
+def recolect_product_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee], inventory: list[dict]):
     found_animal = False
 
     print('Ingresa el nombre del animal que deseas recolectar sus productos: ')
@@ -121,13 +121,13 @@ def recolect_product_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
             print(f'{animal_recolect.name} ha hecho {animal_recolect.amount_product} '
                   f'de {animal_recolect.product}, mientras tu no estabas.')
             print('Recogido exitosamente.')
-            return animal_recolect.recolect_product(animal_recolect.product, animal_recolect.price_product)
+            return animal_recolect.recolect_product(animal_recolect.product, animal_recolect.price_product, inventory)
         else:
             print('Vaya, se encuentra vacío el almacen de productos.')
-            return recolect_product_animal(animals)
+            return recolect_product_animal(animals, inventory)
     else:
         print('Wow, el animal no fue encontrado.')
-        return recolect_product_animal(animals)
+        return recolect_product_animal(animals, inventory)
 
 
 def cure_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
@@ -223,7 +223,7 @@ def main_animals(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
             clean_animal(animals)
             continue
         if op == '5':
-            inventory.append(recolect_product_animal(animals))
+            recolect_product_animal(animals, inventory)
             continue
         if op == '6':
             cure_animal(animals)

@@ -59,14 +59,8 @@ def main():
 
         elif sel == '2':
             animals_main = main_animals(animals_farm)
-            animals_farm.extend(animals_main['Animales'])
-            inventory_animals.extend(animals_main['Inventario'])
-
-            '''for i in range(len(animals_main['Animales'])):
-                    animals_farm.append(animals_main['Animales'][i])
-    
-                for i in range(len(animals_main['Inventario'])):
-                    inventory_animals.append(animals_main['Inventario'][i])'''
+            animals_farm = animals_main['Animales']
+            inventory_animals = animals_main['Inventario']
 
         elif sel == '3':
             calendar_activities = main_calendar(calendar_activities)
@@ -79,31 +73,16 @@ def main():
                                         fert_inventory_crops,
                                         medic_inventory_crops,
                                         ind_inventory_crops)
+            wallet = trading_main['Wallet']
 
-            wallet += trading_main['Wallet']
-
-            print(wallet)
             if trading_main['type'] == 'animal':
-                print(trading_main['Inventario'])
+                for item in trading_main['Inventario']:
+                    print(f"Tienes {item['Cantidad']}x {item['Producto']}.")
             else:
                 seed_inventory_crops = trading_main['Plantables']
                 ind_inventory_crops = trading_main['Individuales']
                 fert_inventory_crops = trading_main['Fertilizantes']
                 medic_inventory_crops = trading_main['Medicamentos']
-
-            '''inventory_animals.clear()
-            print(len(trading_main['Inventario']))
-
-            if len(trading_main['Inventario']) == 0:
-                pass
-            else:
-                for i in range(len(trading_main['Inventario'])):
-                    inventory_animals.append(trading_main['Inventario'][i])
-
-            print(inventory_animals)
-            print('ya')'''
-        elif sel == '5':
-            sys.exit()
 
 
 main()

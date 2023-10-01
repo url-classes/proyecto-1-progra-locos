@@ -58,12 +58,25 @@ class Animal:
             time.sleep(rate_product)
             self.amount_product = self.amount_product + 1
 
-    def recolect_product(self, product: str, precio: int):
-        diccionario = {'Cantidad': int(self.productivity * self.amount_product),
-                       'Producto': product,
-                       'Precio': precio}
+    def recolect_product(self, product: str, precio: int, inventory: list[dict]):
+        diccionario = dict
+        product_existence = False
+
+        for item in inventory:
+            if product == item['Producto']:
+                diccionario = {'Cantidad': item['Cantidad'] + int(self.productivity * self.amount_product),
+                               'Producto': product,
+                               'Precio': precio}
+                inventory.remove(item)
+                product_existence = True
+                break
+        if not product_existence:
+            diccionario = {'Cantidad': int(self.productivity * self.amount_product),
+                               'Producto': product,
+                               'Precio': precio}
+
         self.amount_product = 0
-        return diccionario
+        inventory.append(diccionario)
 
     def evalueate(self):
         while True:
@@ -82,7 +95,7 @@ class Animal:
         self.hungry = min(100, self.hungry + hungry_pts)
 
     def status_animal(self, product: str):
-        r = f'Nombre: {self.name}\nHambre: {self.hungry}\nFelicidad: {self.happiness} '
+        r = f'Nombre: {self.name}\nHambre: {self.hungry}\nFelicidad: {self.happiness} Salud: {self.health}\n'
         r += f'Limpieza: {self.cleaness}\nNivel de Productividad: {self.productivity}\nEnfermedades: '
         if len(self.diseases) == 0:
             pass
