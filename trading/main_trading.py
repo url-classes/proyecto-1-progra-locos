@@ -41,6 +41,7 @@ def buy(buy_list, title: str, wallet: int, inv_list):
     cant = int(input('Ingresa la cantidad del producto a comprar: '))
     if buy_list[sel3].amount - cant <= 0:
         print('No hay suficientes productos de este tipo en venta.')
+        return 0
     else:
         if wallet - buy_list[sel3].price < 0:
             print('No tienes suficiente dinero para comprar este objeto')
