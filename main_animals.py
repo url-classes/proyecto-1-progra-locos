@@ -41,7 +41,7 @@ def stroke_animal(animals: list[Chicken | Sheep | Goat | Cow | Bee]):
         if animal.name == animal_stroke:
             animal_stroke = animal
             found_animal = True
-    time_ = int(input('Ingresa el tiempo que quieres que descanse tu animalito, '
+    time_ = int(input('Ingresa el tiempo que quieres acariciar tu animalito, '
                       'recuerda que tu también debes hacerlo. '))
     if found_animal:
         animal_stroke.stroke(time_)
