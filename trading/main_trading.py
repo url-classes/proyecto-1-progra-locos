@@ -151,6 +151,7 @@ def sell_item_farm(inventory_animals: list[dict], wallet, animals) -> int:
         else:
             print('Vaya ese item, no lo encontré.')
             return sell_item_farm(inventory_animals, wallet, animals)
+
         return coins_add
 
     elif sel_farm == '2':

@@ -83,6 +83,9 @@ def main():
                 ind_inventory_crops = trading_main['Individuales']
                 fert_inventory_crops = trading_main['Fertilizantes']
                 medic_inventory_crops = trading_main['Medicamentos']
+        elif sel == '5':
+            print('Gracias por haber jugado.')
+            break
 
 
 main()
